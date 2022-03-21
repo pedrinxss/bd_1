@@ -24,9 +24,38 @@ default
 
 insert into tb_produto values(
 default, 
-'monitor ultra-wide',
-700.00,
-4
+'teclado',
+50.00,
+5
 );
+
+create trigger tg_atualiza_estoque after insert 
+on tb_venda
+for each row 
+update tb_produto set estoque = estoque - new.qtd
+where id = new.id_prod;
+
+create trigger tg_cancela_venda after delete
+on tb_venda
+for each row 
+update tb_produto set estoque = estoque + old.qtd
+where id = old.id_prod;
+
+
+insert into tb_venda values(
+default,
+3,
+2
+);
+
+delete from tb_venda
+where id = 1;
+
+
+select * from tb_produto;
+select * from tb_venda;
+
+
+
 
 
